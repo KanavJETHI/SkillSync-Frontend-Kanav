@@ -1,0 +1,73 @@
+<div class="sidebar-header">
+  <div class="sidebar-logo">
+    <mat-icon class="logo-icon">sync</mat-icon>
+    <span class="logo-skill">Skill</span><span class="logo-sync">Sync</span>
+  </div>
+</div>
+
+<div class="sidebar-scroll-area">
+  @if (isAdmin) {
+    <div class="sidebar-section-label">Admin Console</div>
+    <nav class="sidebar-nav">
+      @for (item of adminNavItems; track item.link) {
+        <a
+          class="nav-item"
+          routerLinkActive="nav-item--active"
+          [routerLink]="item.link"
+        >
+          <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+          <span>{{ item.label }}</span>
+        </a>
+      }
+    </nav>
+  } @else if (isMentor) {
+    <div class="sidebar-section-label">Mentor Console</div>
+    <nav class="sidebar-nav">
+      @for (item of mentorNavItems; track item.link) {
+        <a
+          class="nav-item"
+          routerLinkActive="nav-item--active"
+          [routerLink]="item.link"
+        >
+          <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+          <span>{{ item.label }}</span>
+        </a>
+      }
+    </nav>
+  } @else {
+    <nav class="sidebar-nav">
+      @for (item of navItems; track item.link) {
+        <a
+          class="nav-item"
+          routerLinkActive="nav-item--active"
+          [routerLink]="item.link"
+        >
+          <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+          <span>{{ item.label }}</span>
+        </a>
+      }
+    </nav>
+  }
+</div>
+
+<div class="sidebar-footer">
+  <div class="sidebar-section-label">Account</div>
+
+  <nav class="sidebar-nav">
+    @for (item of accountItems; track item.link) {
+      <a
+        class="nav-item"
+        routerLinkActive="nav-item--active"
+        [routerLink]="item.link"
+      >
+        <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+        <span>{{ item.label }}</span>
+      </a>
+    }
+
+    <button class="nav-item nav-item--logout" (click)="logout()">
+      <mat-icon class="nav-icon">logout</mat-icon>
+      <span>Logout</span>
+    </button>
+  </nav>
+</div>

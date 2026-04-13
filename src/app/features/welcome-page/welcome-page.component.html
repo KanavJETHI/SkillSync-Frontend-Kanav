@@ -1,0 +1,95 @@
+<div class="welcome-layout">
+  <nav class="navbar">
+    <div class="logo">
+      <mat-icon>hub</mat-icon>
+      <span class="logo-skill">Skill</span><span class="logo-sync">Sync</span>
+    </div>
+    <div class="nav-actions">
+      <button mat-button routerLink="/login" class="nav-link">Log In</button>
+      <button mat-flat-button routerLink="/register" class="signup-btn">Get Started</button>
+    </div>
+  </nav>
+
+  <main class="hero-section">
+    <div class="hero-bg-shape"></div>
+    <div class="hero-content">
+      <div class="badge">🚀 Peer Learning & Mentor Matching</div>
+      <h1 class="hero-title">
+        Accelerate your growth with<br>
+        <span class="highlight">expert mentorship</span>
+      </h1>
+      <p class="hero-subtitle">
+        Connect with industry professionals for personalized 1-on-1 sessions.
+        Learn faster, grow smarter, and build the skills that matter.
+      </p>
+
+      <div class="hero-actions">
+        <button mat-flat-button class="primary-btn" routerLink="/login">
+          <mat-icon>search</mat-icon>
+          Find a Mentor
+        </button>
+        <button mat-stroked-button class="secondary-btn" routerLink="/register">
+          <mat-icon>school</mat-icon>
+          Become a Mentor
+        </button>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-num">500+</span>
+          <span class="stat-label">Active Mentors</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">2k+</span>
+          <span class="stat-label">Sessions Completed</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">98%</span>
+          <span class="stat-label">Satisfaction Rate</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <section class="features-section">
+    <div class="section-header">
+      <h2 class="section-title">Why choose SkillSync?</h2>
+      <p class="section-subtitle">Everything you need to accelerate your career journey</p>
+    </div>
+
+    <div class="features-grid">
+      @for (feature of features; track feature.title) {
+        <div class="feature-card">
+          <div class="icon-wrapper">
+            <mat-icon>{{ feature.icon }}</mat-icon>
+          </div>
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.description }}</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>Ready to start your journey?</h2>
+      <p>Join thousands of learners already growing with SkillSync.</p>
+      <div class="cta-actions">
+        <button mat-flat-button class="cta-primary-btn" routerLink="/register">Create Free Account</button>
+        <button mat-button class="cta-secondary-btn" routerLink="/login">I already have an account</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <mat-icon>hub</mat-icon>
+        <span class="logo-skill">Skill</span><span class="logo-sync">Sync</span>
+      </div>
+      <p>© 2026 SkillSync. Empowering careers worldwide.</p>
+    </div>
+  </footer>
+</div>

@@ -1,0 +1,158 @@
+/* ── Header ──────────────────────────────────────── */
+.dialog-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem 1.5rem 0;
+}
+
+.dialog-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+
+  mat-icon { font-size: 1.5rem; width: 1.5rem; height: 1.5rem; }
+}
+
+.dialog-title-block { flex: 1; }
+
+.dialog-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.15rem;
+  letter-spacing: -0.3px;
+}
+
+.dialog-sub {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.close-btn {
+  color: #94a3b8 !important;
+  flex-shrink: 0;
+  &:hover { color: #475569 !important; }
+}
+
+/* ── Content ─────────────────────────────────────── */
+.dialog-content {
+  padding: 1.25rem 1.5rem !important;
+  overflow-x: hidden;
+}
+
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+.full-width  { width: 100%; }
+
+.field-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  mat-icon { font-size: 0.9rem; width: 0.9rem; height: 0.9rem; }
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+.flex-1 { flex: 1; }
+
+/* ── Skill Chips ─────────────────────────────────── */
+.skill-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  padding: 4px 10px 4px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.chip-remove {
+  font-size: 0.9rem !important;
+  width: 0.9rem !important;
+  height: 0.9rem !important;
+  cursor: pointer;
+  color: #93c5fd;
+  transition: color 0.15s;
+  &:hover { color: #1d4ed8; }
+}
+
+/* ── Actions ─────────────────────────────────────── */
+.dialog-actions {
+  padding: 0 1.5rem 1.5rem !important;
+  gap: 0.75rem !important;
+  justify-content: flex-end !important;
+  border-top: 1px solid #f1f5f9;
+  margin-top: 0.25rem;
+}
+
+.cancel-btn {
+  height: 42px !important;
+  border-radius: 10px !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  color: #64748b !important;
+  border-color: #e2e8f0 !important;
+}
+
+.submit-btn {
+  height: 42px !important;
+  border-radius: 10px !important;
+  font-size: 0.875rem !important;
+  font-weight: 700 !important;
+  background: #dd0031 !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px;
+
+  mat-icon { font-size: 1.1rem; width: 1.1rem; height: 1.1rem; }
+  &:disabled { background: #e2e8f0 !important; color: #94a3b8 !important; }
+}
+
+.btn-spinner {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+/* ── Material overrides ──────────────────────────── */
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 20px !important;
+  box-shadow: 0 20px 40px -8px rgba(0,0,0,0.15) !important;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper {
+  background-color: #f8fafc !important;
+}

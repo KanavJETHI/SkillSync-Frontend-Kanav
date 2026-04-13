@@ -1,0 +1,177 @@
+<div class="mentor-dashboard">
+
+  <!-- ── Hero Banner ──────────────────────────────── -->
+  <div class="hero-banner">
+    <div class="hero-left">
+      <p class="hero-date">{{ today }}</p>
+      <h1 class="hero-greeting">{{ greeting }}, {{ firstName() }}!</h1>
+      <p class="hero-sub">Here's your mentoring overview for today</p>
+
+      <div class="hero-quick-stats">
+        <div class="quick-stat">
+          <span class="qs-value">{{ pendingRequests().length }}</span>
+          <span class="qs-label">Pending</span>
+        </div>
+        <div class="qs-divider"></div>
+        <div class="quick-stat">
+          <span class="qs-value">{{ activeLearners() }}</span>
+          <span class="qs-label">Active Learners</span>
+        </div>
+        <div class="qs-divider"></div>
+        <div class="quick-stat">
+          <span class="qs-value">{{ mentorProfile()?.rating ?? '—' }}</span>
+          <span class="qs-label">Rating</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-avatar">
+        @if (user.profilePictureUrl) {
+          <img class="hero-avatar-img" [src]="user.profilePictureUrl" [alt]="user.username" />
+        } @else {
+          {{ userInitials() }}
+        }
+      </div>
+      <div class="hero-avatar-label">Mentor</div>
+    </div>
+  </div>
+
+  <!-- ── Stat Cards ───────────────────────────────── -->
+  <section class="stats-row">
+    @for (s of stats(); track s.label) {
+      <div class="stat-card">
+        <div class="stat-icon-wrap" [style.background]="s.bg">
+          <mat-icon [style.color]="s.color">{{ s.icon }}</mat-icon>
+        </div>
+        <div class="stat-body">
+          @if (loading()) {
+            <app-skeleton height="28px" width="56px" borderRadius="6px"></app-skeleton>
+            <app-skeleton height="13px" width="90px" borderRadius="4px" style="margin-top:8px"></app-skeleton>
+          } @else {
+            <span class="stat-value">{{ s.value }}</span>
+            <span class="stat-label">{{ s.label }}</span>
+            <span class="stat-sub">{{ s.sub }}</span>
+          }
+        </div>
+      </div>
+    }
+  </section>
+
+  <!-- ── Pending Requests ──────────────────────────── -->
+  <section class="section">
+    <div class="section-head">
+      <h2 class="section-title">
+        <span class="section-title-dot pending-dot"></span>
+        Pending Session Requests
+      </h2>
+      @if (pendingRequests().length > 0) {
+        <span class="count-badge pending-badge">{{ pendingRequests().length }}</span>
+      }
+    </div>
+
+    @if (loading()) {
+      <div class="request-cards">
+        @for (_ of [1,2,3]; track _) {
+          <div class="request-card">
+            <div class="request-card-left">
+              <app-skeleton width="40px" height="40px" borderRadius="50%"></app-skeleton>
+              <div class="req-info" style="display:flex;flex-direction:column;gap:8px">
+                <app-skeleton height="16px" width="120px" borderRadius="4px"></app-skeleton>
+                <app-skeleton height="13px" width="160px" borderRadius="4px"></app-skeleton>
+                <app-skeleton height="12px" width="100px" borderRadius="4px"></app-skeleton>
+              </div>
+            </div>
+            <div class="req-actions">
+              <app-skeleton height="36px" width="90px" borderRadius="4px"></app-skeleton>
+              <app-skeleton height="36px" width="90px" borderRadius="4px"></app-skeleton>
+            </div>
+          </div>
+        }
+      </div>
+    } @else if (pendingRequests().length === 0) {
+      <div class="empty-card">
+        <mat-icon>event_available</mat-icon>
+        <p>No pending requests — you're all caught up!</p>
+      </div>
+    } @else {
+      <div class="request-cards">
+        @for (r of pendingRequests(); track r.id) {
+          <div class="request-card">
+            <div class="request-card-left">
+              <div class="req-avatar" [style.background]="learnerColor(r.learnerId)">
+                {{ learnerInitials(r.learnerId) }}
+              </div>
+              <div class="req-info">
+                <div class="req-learner">Learner #{{ r.learnerId }}</div>
+                <div class="req-topic">{{ r.topic || 'No topic specified' }}</div>
+                <div class="req-date">
+                  <mat-icon>schedule</mat-icon> {{ formatDate(r.sessionDate) }}
+                </div>
+              </div>
+            </div>
+            <div class="req-actions">
+              <button mat-flat-button class="accept-btn" (click)="accept(r.id)">
+                <mat-icon>check</mat-icon> Accept
+              </button>
+              <button mat-stroked-button class="decline-btn" (click)="reject(r.id)">
+                <mat-icon>close</mat-icon> Decline
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </section>
+
+  <!-- ── Recent Reviews ───────────────────────────── -->
+  <section class="section">
+    <div class="section-head">
+      <h2 class="section-title">
+        <span class="section-title-dot review-dot"></span>
+        Recent Reviews
+      </h2>
+      @if (reviews().length > 0) {
+        <span class="count-badge review-badge">{{ reviews().length }}</span>
+      }
+    </div>
+
+    @if (reviews().length === 0) {
+      <div class="empty-card">
+        <mat-icon>rate_review</mat-icon>
+        <p>No reviews yet. Complete sessions to receive feedback.</p>
+      </div>
+    } @else {
+      <div class="reviews-grid">
+        @for (r of reviews(); track r.id) {
+          <div class="review-card">
+            <div class="review-header">
+              @if (reviewerPicture(r.userId)) {
+                <img class="mini-avatar mini-avatar--img"
+                     [src]="reviewerPicture(r.userId)!"
+                     [alt]="reviewerName(r.userId)" />
+              } @else {
+                <div class="mini-avatar" [style.background]="learnerColor(r.userId)">
+                  {{ reviewerInitials(r.userId) }}
+                </div>
+              }
+              <div class="review-meta">
+                <span class="reviewer-name">{{ reviewerName(r.userId) }}</span>
+                <span class="review-date">{{ formatDate(r.createdAt) }}</span>
+              </div>
+            </div>
+            <div class="review-stars">
+              @for (filled of stars(r.rating); track $index) {
+                <mat-icon class="star" [class.star--filled]="filled">star</mat-icon>
+              }
+              <span class="rating-num">{{ r.rating }}.0</span>
+            </div>
+            @if (r.comment) {
+              <p class="review-comment">"{{ r.comment }}"</p>
+            }
+          </div>
+        }
+      </div>
+    }
+  </section>
+
+</div>

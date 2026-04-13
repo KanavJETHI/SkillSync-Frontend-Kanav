@@ -1,0 +1,148 @@
+<div class="page">
+
+  <header class="page-header">
+    <div class="header-left">
+      <div class="admin-badge">
+        <mat-icon>admin_panel_settings</mat-icon>
+        Admin Console
+      </div>
+      <h1 class="page-title">User Management</h1>
+      <p class="page-sub">View and manage all platform users</p>
+    </div>
+    <div class="header-stats">
+      <div class="mini-stat">
+        <span class="mini-stat-value">{{ users().length }}</span>
+        <span class="mini-stat-label">Total Users</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Filters -->
+  <div class="filters-bar">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search users...</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="role-field">
+      <mat-label>Role</mat-label>
+      <mat-select [ngModel]="roleFilter()" (ngModelChange)="roleFilter.set($event)">
+        <mat-option value="ALL">All Roles</mat-option>
+        <mat-option value="LEARNER">Learner</mat-option>
+        <mat-option value="MENTOR">Mentor</mat-option>
+        <mat-option value="ADMIN">Admin</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <span class="results-count">{{ filteredUsers().length }} result(s)</span>
+  </div>
+
+  <!-- Table -->
+  @if (loading()) {
+    <mat-card appearance="outlined" class="table-card">
+      <div class="table-responsive">
+        <table class="users-table">
+          <thead>
+            <tr><th>User</th><th>Username</th><th>Email</th><th>Role</th><th>Member Since</th></tr>
+          </thead>
+          <tbody>
+            @for (_ of [1,2,3,4,5,6]; track _) {
+              <tr>
+                <td>
+                  <div class="user-cell">
+                    <app-skeleton width="36px" height="36px" borderRadius="50%"></app-skeleton>
+                    <app-skeleton height="15px" width="100px" borderRadius="4px"></app-skeleton>
+                  </div>
+                </td>
+                <td><app-skeleton height="14px" width="80px" borderRadius="4px"></app-skeleton></td>
+                <td><app-skeleton height="14px" width="140px" borderRadius="4px"></app-skeleton></td>
+                <td><app-skeleton height="22px" width="64px" borderRadius="999px"></app-skeleton></td>
+                <td><app-skeleton height="14px" width="90px" borderRadius="4px"></app-skeleton></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </mat-card>
+  } @else if (error()) {
+    <div class="empty-state">
+      <div class="empty-icon-wrapper"><mat-icon>error_outline</mat-icon></div>
+      <p>Failed to load users. Check admin permissions.</p>
+    </div>
+  } @else if (filteredUsers().length === 0) {
+    <div class="empty-state">
+      <div class="empty-icon-wrapper"><mat-icon>search_off</mat-icon></div>
+      <p>No users match your search.</p>
+    </div>
+  } @else {
+    <mat-card appearance="outlined" class="table-card">
+      <div class="table-responsive">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Member Since</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (u of filteredUsers(); track u.id) {
+              <tr>
+                <td>
+                  <div class="user-cell">
+                    <div class="user-avatar" [style.background]="avatarColor(u)">
+                      {{ userAvatar(u) }}
+                    </div>
+                    <span class="user-display-name">{{ u.name || u.username }}</span>
+                  </div>
+                </td>
+                <td class="username-cell">@{{ u.username }}</td>
+                <td class="email-cell">{{ u.email }}</td>
+                <td>
+                  <span class="role-badge"
+                    [style.color]="roleColor(u.role)"
+                    [style.background]="roleBg(u.role)">
+                    @if (u.role === 'ADMIN') {
+                      <mat-icon class="role-icon">shield</mat-icon>
+                    } @else if (u.role === 'MENTOR') {
+                      <mat-icon class="role-icon">psychology</mat-icon>
+                    } @else {
+                      <mat-icon class="role-icon">school</mat-icon>
+                    }
+                    {{ u.role }}
+                  </span>
+                </td>
+                <td class="date-cell">{{ formatDate(u.createdAt) }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </mat-card>
+
+    @if (totalPages() > 1) {
+      <div class="pagination-bar">
+        <span class="pagination-info">Showing {{ rangeStart }}–{{ rangeEnd }} of {{ totalElements() }} users</span>
+        <div class="pagination-controls">
+          <button class="page-btn page-btn--nav" [disabled]="currentPage() === 0" (click)="goToPage(currentPage() - 1)">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          @for (p of pageNumbers(); track $index) {
+            @if (p === '...') {
+              <span class="page-ellipsis">…</span>
+            } @else {
+              <button class="page-btn" [class.page-btn--active]="p === currentPage()" (click)="goToPage(p)">{{ +p + 1 }}</button>
+            }
+          }
+          <button class="page-btn page-btn--nav" [disabled]="currentPage() === totalPages() - 1" (click)="goToPage(currentPage() + 1)">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+      </div>
+    }
+  }
+
+</div>
